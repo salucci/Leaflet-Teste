@@ -1,0 +1,42 @@
+<html>
+<meta http-equiv="content-type" content="text/html; charset=UTF8">
+<head>
+	<style>
+		#map {
+		  width: 960px;
+		  height: 500px;
+		}
+	</style>
+	
+<script type="text/javascript" src="leaflet.js"></script>
+<script type="text/javascript" src="d3.js"></script>
+<link rel="stylesheet" type="text/css" href="leaflet.css">
+	<script type="text/javascript">
+	
+	function func1() { 
+var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
+    .addLayer(new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"));
+
+	
+    
+
+   var svg = d3.select(map.getPanes().overlayPane).append("svg"),
+    g = svg.append("g").attr("class", "leaflet-zoom-hide");
+	
+d3.xml("SVG_MunicipiosBrasil.svg", "image/svg+xml", function(svgImg) {
+         map.getPanes().overlayPane.appendChild(svgImg.documentElement);
+       
+    });
+	
+	} 
+
+window.onload=func1; 
+
+
+
+	</script>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
