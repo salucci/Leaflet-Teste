@@ -23,7 +23,7 @@ var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
    var svg = d3.select(map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-d3.json("municipios.json", function(error, collection) {
+d3.json("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/municipios.json", function(error, collection) {
   if (error) throw error;
 
   var transform = d3.geo.transform({point: projectPoint}),
