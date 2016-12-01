@@ -26,23 +26,7 @@ var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
 d3.xml("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/SVG_MunicipiosBrasil.svg", "image/svg+xml", function(svgImg) {
          map.getPanes().overlayPane.appendChild(svgImg.documentElement);
        
-	     map.on("viewreset", reset);
-			reset();
 			
-				function reset() {
-    var bounds = path.bounds(collection),
-        topLeft = bounds[0],
-        bottomRight = bounds[1];
-
-    svg .attr("width", bottomRight[0] - topLeft[0])
-        .attr("height", bottomRight[1] - topLeft[1])
-        .style("left", topLeft[0] + "px")
-        .style("top", topLeft[1] + "px");
-
-    g   .attr("transform", "translate(" + -topLeft[0] + "," + -topLeft[1] + ")");
-
-    feature.attr("d", path);
-  }
     });
 	
 	} 
