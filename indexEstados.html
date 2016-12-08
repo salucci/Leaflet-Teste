@@ -10,7 +10,6 @@
 	
 <script type="text/javascript" src="leaflet.js"></script>
 <script type="text/javascript" src="d3.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="leaflet.css">
 	<script type="text/javascript">
 	
@@ -18,10 +17,6 @@
 obj['0AC'] = '10';
 
 
-var objJson;
-$.getJSON("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil.json", function(json) {
-  objJson = json;
-});
 
 	function func1() { 
 var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
@@ -31,14 +26,14 @@ var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
 	
    var color = d3.scale.category10();
    var scale = d3.scale.linear()
-  .domain([0, 10])
+  .domain([0,44846530])
   .range(["white","red"]);
   
 
    var svg = d3.select(map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	//var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil.json";
+	var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil.json";
 
 	
 d3.json(objJson, function(error, collection) {
@@ -50,8 +45,8 @@ d3.json(objJson, function(error, collection) {
   var feature = g.selectAll("path")
       .data(collection.features)
     .enter().append("path").style("fill", 
-	function(d) { 
-        return scale(obj[d.properties.UF]); });
+	function (d,i) { return scale(d.properties.Populacao) }
+	);
 	
 
 	
