@@ -16,6 +16,9 @@
 	var obj = {};
 obj['0AC'] = '10';
 
+   var scale = d3.scale.linear()
+  .domain([0,44846530])
+  .range(["white","blue"]);
 
 
 	function func1() { 
@@ -24,16 +27,17 @@ var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
 
 
 	
-   var color = d3.scale.category10();
-   var scale = d3.scale.linear()
-  .domain([0,44846530])
-  .range(["white","red"]);
+  // var color = d3.scale.category10();
+
+  
+  var color = d3.scale.ordinal()
+.range(["red","blue","orange"]); 
   
 
    var svg = d3.select(map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-	var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil.json";
+	var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil2.json";
 
 	
 d3.json(objJson, function(error, collection) {
@@ -45,7 +49,7 @@ d3.json(objJson, function(error, collection) {
   var feature = g.selectAll("path")
       .data(collection.features)
     .enter().append("path").style("fill", 
-	function (d,i) { return scale(d.properties.Populacao) }
+	function (d,i) { console.log(d.properties.ESTADOS);console.log(d.properties.Populacao);return scale(d.properties.Populacao) }
 	);
 	
 

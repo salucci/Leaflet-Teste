@@ -1,0 +1,86 @@
+<html>
+<meta http-equiv="content-type" content="text/html; charset=UTF8">
+<head>
+	<style>
+		#map {
+		  width: 960px;
+		  height: 500px;
+		}
+	</style>
+	
+<script type="text/javascript" src="leaflet.js"></script>
+<script type="text/javascript" src="d3.js"></script>
+<script type="text/javascript" src="leaflet.ajax.min.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="leaflet.css">
+	<script type="text/javascript">
+	
+	var obj = {};
+obj['0AC'] = '10';
+var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil2.json";
+
+   var scale = d3.scale.linear()
+  .domain([0,44846530])
+  .range(["white","blue"]);
+
+
+	function func1() { 
+	var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
+		.addLayer(new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"));
+		
+		var geojsonLayer = new L.GeoJSON.AJAX(objJson, {style: style}).addTo(map);;
+
+		
+      //  geojsonLayer = L.geoJson(response).addTo(map);
+      //  map.fitBounds(geojsonLayer.getBounds());
+
+//L.geoJson(geojsonLayer).addTo(map);
+	  
+
+
+//L.geoJson(geojsonLayer, {style: style}).addTo(map);
+
+
+}
+      
+	  
+function style(feature) {
+console.log(feature.properties.ESTADOS,feature.properties.Populacao);
+    return {
+        fillColor: scale(feature.properties.Populacao),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+function ajaxme() {
+$.ajax({
+    type: "POST",
+    url: 'https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil.json',
+	//contentType: "application/json; charset=utf-8",
+    dataType: 'json',
+    success: function (response) {
+        geojsonLayer = L.geoJson(response).addTo(map);
+
+    }
+});
+}
+
+
+
+window.onload=func1; 
+
+
+
+	</script>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
