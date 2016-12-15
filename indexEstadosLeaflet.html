@@ -6,6 +6,18 @@
 		  width: 960px;
 		  height: 500px;
 		}
+		.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
 	</style>
 	
 <script type="text/javascript" src="leaflet.js"></script>
@@ -21,34 +33,45 @@
 	var obj = {};
 obj['0AC'] = '10';
 var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil2.json";
+var geojsonLayer;
+var map;
+var info = L.control();
+var scale = d3.scale.linear()
+.domain([0,44846530])
+ .range(["#ccccff","#0000ff"]);
 
-   var scale = d3.scale.linear()
-  .domain([0,44846530])
-  .range(["white","blue"]);
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+
+info.update = function (props) {
+    this._div.innerHTML = '<h4>População dos estados brasileiros:</h4>' +  (props ?
+        '<b>' + props.ESTADOS + '</b><br />' + props.Populacao + ' Habitantes'
+        : 'Passe o mouse');
+};
 
 
 	function func1() { 
-	var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
+	map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
 		.addLayer(new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"));
 		
-		var geojsonLayer = new L.GeoJSON.AJAX(objJson, {style: style}).addTo(map);;
-
-		
-      //  geojsonLayer = L.geoJson(response).addTo(map);
-      //  map.fitBounds(geojsonLayer.getBounds());
-
-//L.geoJson(geojsonLayer).addTo(map);
-	  
-
-
-//L.geoJson(geojsonLayer, {style: style}).addTo(map);
+		geojsonLayer = new L.GeoJSON.AJAX(objJson, {style: style, onEachFeature: onEachFeature});
+		geojsonLayer.addTo(map);
+		info.addTo(map);
 
 
 }
-      
-	  
+ 
+
 function style(feature) {
 console.log(feature.properties.ESTADOS,feature.properties.Populacao);
+
+if (feature.properties.ESTADOS == 'Bahia'){
+feature.properties.ESTADOS = 'Teste';
+}
     return {
         fillColor: scale(feature.properties.Populacao),
         weight: 2,
@@ -59,18 +82,39 @@ console.log(feature.properties.ESTADOS,feature.properties.Populacao);
     };
 }
 
-function ajaxme() {
-$.ajax({
-    type: "POST",
-    url: 'https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil2.json',
-	//contentType: "application/json; charset=utf-8",
-    dataType: 'json',
-    success: function (response) {
-        geojsonLayer = L.geoJson(response).addTo(map);
+function highlightFeature(e) {
+    var layer = e.target;
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
 
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
     }
-});
+	info.update(layer.feature.properties);
 }
+
+function resetHighlight(e) {
+    geojsonLayer.resetStyle(e.target);
+	info.update();
+}
+
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}
+
+
 
 
 
