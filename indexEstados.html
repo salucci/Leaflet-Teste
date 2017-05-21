@@ -32,28 +32,26 @@ var map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
 
 
 	
-<<<<<<< HEAD
   // var color = d3.scale.category10();
 
   
   var color = d3.scale.ordinal()
 .range(["red","blue","orange"]); 
-=======
+
    var color = d3.scale.category10();
    var scale = d3.scale.linear()
   .domain([0, 10])
   .range(["white","red"]);
->>>>>>> parent of 8839fcb... edit gabi
+
   
 
    var svg = d3.select(map.getPanes().overlayPane).append("svg"),
     g = svg.append("g").attr("class", "leaflet-zoom-hide");
 	
-<<<<<<< HEAD
+
 	var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil2.json";
-=======
+
 	//var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/Brasil.json";
->>>>>>> parent of 8839fcb... edit gabi
 
 	
 d3.json(objJson, function(error, collection) {
@@ -65,13 +63,13 @@ d3.json(objJson, function(error, collection) {
   var feature = g.selectAll("path")
       .data(collection.features)
     .enter().append("path").style("fill", 
-<<<<<<< HEAD
+
 	function (d,i) { console.log(d.properties.ESTADOS);console.log(d.properties.Populacao);return scale(d.properties.Populacao) }
 	);
-=======
+
 	function(d) { 
         return scale(obj[d.properties.UF]); });
->>>>>>> parent of 8839fcb... edit gabi
+
 	
 
 	
