@@ -67,11 +67,28 @@ info.update = function (props) {
  
 
 function style(feature) {
-console.log(feature.properties.ESTADOS,feature.properties.Populacao);
+console.log(feature.properties.ESTADOS,feature.properties.COD_UF);
 
 if (feature.properties.ESTADOS == 'Bahia'){
 feature.properties.ESTADOS = 'Teste';
 }
+
+$.ajax({
+    url: "http://127.0.0.1/projects/phpController.php",
+    type: "POST",
+    dataType: "json",
+    data: {"Codigo": 1100023},
+    success: function(data){
+        console.log(data);
+		feature = $.extend({}, feature, data);	
+		
+    },
+    error: function(error){
+         console.log("Error:");
+         console.log(error);
+    }
+});
+
     return {
         fillColor: scale(feature.properties.Populacao),
         weight: 2,
@@ -119,6 +136,8 @@ function onEachFeature(feature, layer) {
 
 
 window.onload=func1; 
+
+
 
 
 
