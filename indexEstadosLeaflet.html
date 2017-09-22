@@ -1,6 +1,8 @@
 <html>
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
 <head>
+
+
 	<style>
 		#map {
 		  width: 960px;
@@ -20,25 +22,37 @@
 }
 	</style>
 	
-<script type="text/javascript" src="leaflet.js"></script>
-<script type="text/javascript" src="d3.js"></script>
-<script type="text/javascript" src="leaflet.ajax.min.js"></script>
-<script
+	<script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
+  
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="leaflet.js"></script>
+<script type="text/javascript" src="leaflet.ajax.min.js"></script>
+<script type="text/javascript" src="leaflet.spin.js"></script>
+<script type="text/javascript" src="d3.js"></script>
+
 <link rel="stylesheet" type="text/css" href="leaflet.css">
-	<script type="text/javascript">
+
+
+	<script type="text/javascript"> 
 	
 	var obj = {};
 obj['0AC'] = '10';
-var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/BrasilNovo.json";
+var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/municipios_fixed.json";
 var geojsonLayer;
 var map;
-var info = L.control();
-var scale = d3.scale.linear()
-.domain([0,44846530])
- .range(["#ccccff","#0000ff"]);
+
+var info = L.control(); 
+var scale = d3.scale.linear() 
+.domain([0,100])
+ .range(["#ccccff","#0000ff"]); 
+ 
 
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -48,31 +62,24 @@ info.onAdd = function (map) {
 
 
 info.update = function (props) {
-    this._div.innerHTML = '<h4>População dos estados brasileiros:</h4>' +  (props ?
-        '<b>' + props.ESTADOS + '</b><br />' + props.Populacao + ' Habitantes'
+    this._div.innerHTML = '<h4>Percentual de habitação Urbana:</h4>' +  (props ?
+        '<b>' + props.Municipio + '</b><br />' + props.UrbanosPerc + ' %'
         : 'Passe o mouse');
 };
 
 
-	function func1() { 
+function func1() { 
 	map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
 		.addLayer(new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"));
 		
 		geojsonLayer = new L.GeoJSON.AJAX(objJson, {style: style, onEachFeature: onEachFeature});
-		geojsonLayer.addTo(map);
-		info.addTo(map);
-
-
-}
- 
-
-function style(feature) {
-console.log(feature.properties.ESTADOS,feature.properties.COD_UF);
-
-if (feature.properties.ESTADOS == 'Bahia'){
-feature.properties.ESTADOS = 'Teste';
+		geojsonLayer.on('data:loaded',function(e){
+		alert("carregou");
+				GetGeoData();
+});
 }
 
+function GetGeoData(){
 $.ajax({
     url: "http://127.0.0.1/projects/phpController.php",
     type: "POST",
@@ -80,7 +87,7 @@ $.ajax({
     data: {"Codigo": 1100023},
     success: function(data){
         console.log(data);
-		feature = $.extend({}, feature, data);	
+		MergeData(data);
 		
     },
     error: function(error){
@@ -88,10 +95,47 @@ $.ajax({
          console.log(error);
     }
 });
+}
 
+
+
+function MergeData(data){
+	var count = 0;
+geojsonLayer.eachLayer(function (layer) {
+
+	var IndexedIncomingLayer = data[layer.feature.properties.COD_IBGE];
+
+	if (IndexedIncomingLayer != null) { 
+			for (var key in IndexedIncomingLayer) {
+			layer.feature.properties[key] = IndexedIncomingLayer[key];
+			}
+			count++;
+		} 
+		else { layer.feature.properties[status] = 'Data not found' }
+	//console.log (IndexedIncomingLayer);
+	IndexedIncomingLayer = null;  
+
+  layer.setStyle({
+            fillColor:  scale(parseInt(layer.feature.properties.UrbanosPerc)),
+            weight: 0,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+        });
+  
+});
+alert("Foram encontradas e adicionadas ao mapa "+count+" regiões ");
+		geojsonLayer.addTo(map);
+				info.addTo(map);
+}
+ 
+
+function style(feature) {
+//console.log(feature.properties.UrbanosPerc);
     return {
-        fillColor: scale(feature.properties.Populacao),
-        weight: 2,
+        fillColor: scale(parseInt(feature.properties.UrbanosPerc)),
+        weight: 0,
         opacity: 1,
         color: 'white',
         dashArray: '3',
@@ -138,12 +182,32 @@ function onEachFeature(feature, layer) {
 window.onload=func1; 
 
 
+    $(".nav li").on("click", function() {
+      $(".nav li").removeClass("active");
+      $(this).addClass("active");
+    });
+
 
 
 
 	</script>
 </head>
 <body>
+<div class="container">
+
+
+
+<div class="navbar-collapse collapse">
+  <ul class="nav navbar-nav">
+    <li class="active" id="homeL"><a data-scroll href="#Home">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li class="" id="workL"><a data-scroll href="#Work">Work</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</div>
+  
+
+  
 <div id="map"></div>
 </body>
 </html>
