@@ -2,8 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
-
-		<script
+	<script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
@@ -12,11 +11,14 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<script type="text/javascript" src="leaflet.js"></script>
+	<script src="bundle.js"></script>
 <script type="text/javascript" src="leaflet.ajax.min.js"></script>
 <script type="text/javascript" src="d3.js"></script>
 <link rel="stylesheet" type="text/css" href="leaflet.css">
   <script src="spin.min.js"></script>
 <script type="text/javascript" src="leaflet.spin.min.js"></script>
+
+
 	
 	<style>
 		#map {
@@ -40,7 +42,7 @@
     <title>Test Menu</title>
     </head>
     <body>
-    <div class="container">
+    <div class="container easyPrint">
 	
 	
 
@@ -320,28 +322,13 @@ const handleFormSubmit = event => {
 
 form.addEventListener('submit', handleFormSubmit);
   
-  <!-- $.ajax({ -->
-    <!-- url: "http://127.0.0.1/projects/phpController.php", -->
-    <!-- type: "POST", -->
-    <!-- dataType: "json", -->
-    <!-- data: {"Codigo": 1100023}, -->
-    <!-- success: function(data){ -->
-        <!-- console.log(data); -->
-		<!-- MergeData(data); -->
-		
-    <!-- }, -->
-    <!-- error: function(error){ -->
-         <!-- console.log("Error:"); -->
-         <!-- console.log(error); -->
-    <!-- } -->
-<!-- }); -->
+
 
 
 // -------------------Leaflet Section------------------------------Leaflet Section-------------
 
 	var obj = {};
 obj['0AC'] = '10';
-var objJson = "https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/municipios_fixed.json";
 var geojsonLayer;
 var map;
 var IncomingData;
@@ -350,33 +337,41 @@ var IncomingData;
 
 var info = L.control(); 
 var scale = d3.scale.linear() 
-.domain([0,1])
- .range(["#ccccff","#0000ff"]); 
+.domain([0.0,1.0])
+ .range(["#ffffff","#0000ff"]); 
+var maxBounds = L.bounds([[-50, -90],[5, -25]]);
+ var southWest = L.latLng(10, -10),
+	northEast = L.latLng(-40, -110),
+     mybounds = L.latLngBounds(southWest, northEast);
  
  info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+	if(typeof this._div === 'undefined')
+	this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
     this.update();
     return this._div;
 };
 
 
 info.update = function (props) {
-	this._div.innerHTML = '<h4>Percentual de habitação Urbana:</h4>';
-	
-	if (!props) {this._div.innerHTML = this._div.innerHTML+'<br /> Passe o mouse';}
+	var creatingInnerHTML = '<h4>Variáveis da Região:</h4>';
+	if (!props) {this._div.innerHTML = creatingInnerHTML+' Passe o mouse';}
 	else{
 	for (var key in props) {
-	var old_html = this._div.innerHTML;
-	this._div.innerHTML = old_html + '<b>'+key+' : ' + props[key] + '</b><br/>'
+	creatingInnerHTML = creatingInnerHTML + '<b>'+key+' : ' + props[key] + '</b><br/>';
 			}
+			this._div.innerHTML = creatingInnerHTML;
 	}
 };
 
-
-
+//[-15.5, -49.3]
 function SetupMap() { 
-	map = new L.Map("map", {center: [-15.5, -49.3], zoom: 4})
+	map = new L.Map("map", {center: mybounds.getCenter(),maxBounds: mybounds,maxBoundsViscosity: 0, zoom: 4,minZoom: 4,maxZoom: 10})
 		.addLayer(new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"));
+	// L.easyPrint({
+	// title: 'My awesome print button',
+	// position: 'bottomright',
+	// sizeModes: ['A4Portrait', 'A4Landscape']
+	// }).addTo(map);
 }
 
 
@@ -384,7 +379,13 @@ function GetGeoJson(){
 		map.spin(true); //start spin while GeoJson download
 		
 		if (lastFormData.options == "municipios"){	
-		geojsonLayer = new L.GeoJSON.AJAX(objJson, {style: style, onEachFeature: onEachFeature});
+		geojsonLayer = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/municipios_fixed.json", {style: style, onEachFeature: onEachFeature});
+		}
+		if (lastFormData.options == "estados"){	
+		geojsonLayer = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/estados_fixed.json", {style: style, onEachFeature: onEachFeature});
+		}
+		if (lastFormData.options == "regioes"){	
+		geojsonLayer = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/regioes_fixed.json", {style: style, onEachFeature: onEachFeature});
 		}
 		
 		geojsonLayer.on('data:loaded',function(e){
@@ -438,7 +439,7 @@ $.ajax({
 function fillAtributes(data){
 $( ".varfield" ).html('<option value="" selected disabled hidden>Variável</option>');
 for(var i = 0; i < data.length; i++) {	
-	$( ".varfield" ).append('<option>'+data[i].Atributo+'</option>');
+	$( ".varfield" ).append('<option value="'+data[i].Codigo+'">'+data[i].AttAlias+'</option>');
 
 }
 }
@@ -453,19 +454,27 @@ geojsonLayer.eachLayer(function (layer) {
 
 	var IndexedIncomingLayer = IncomingData[layer.feature.properties.COD_IBGE];
 
-	if (IndexedIncomingLayer != null) { 
+	if (IndexedIncomingLayer != null) { //teste com digito verificador
 			for (var key in IndexedIncomingLayer) {
 			layer.feature.properties[key] = IndexedIncomingLayer[key];
 			}
 			count++;
 		} 
-		else { layer.feature.properties[status] = 'Data not found' }
+		else if (IncomingData[layer.feature.properties.COD_IBGE.slice(0, - 1)] != null) //Teste sem digito verificador
+		{
+			IndexedIncomingLayer = IncomingData[layer.feature.properties.COD_IBGE.slice(0, - 1)];
+			for (var key in IndexedIncomingLayer) {
+			layer.feature.properties[key] = IndexedIncomingLayer[key];
+			}
+			count++;
+		}			
+			else{ layer.feature.properties.status = 'Data not found'; layer.feature.properties.FinalValue = '0'; }
 	//console.log (IndexedIncomingLayer);
 	IndexedIncomingLayer = null;  
 
   layer.setStyle({
-            fillColor:  scale(parseInt(layer.feature.properties.FinalValue)),
-            weight: 0,
+        fillColor:  scale(parseFloat(layer.feature.properties.FinalValue)),
+        weight: 0,
         opacity: 1,
         color: 'white',
         dashArray: '3',
@@ -483,7 +492,7 @@ alert("Foram encontradas e adicionadas ao mapa "+count+" regiões ");
 function style(feature) {
 //console.log(feature.properties.UrbanosPerc);
     return {
-        fillColor: scale(parseInt(feature.properties.FinalValue)),
+        fillColor: scale(parseFloat(feature.properties.FinalValue)),
         weight: 0,
         opacity: 1,
         color: 'white',
