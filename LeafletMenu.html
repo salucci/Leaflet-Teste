@@ -2,13 +2,15 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF8">
-	<script
+
+  	<script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
-  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  
 
 	<script type="text/javascript" src="leaflet.js"></script>
 	<script src="bundle.js"></script>
@@ -22,8 +24,13 @@
 	
 	<style>
 		#map {
-		  width: 960px;
-		  height: 500px;
+		  width: 100%;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    transition: height 0.5s ease-in-out;
 		}
 		.info {
     padding: 6px 8px;
@@ -37,6 +44,21 @@
     margin: 0 0 5px;
     color: #777;
 }
+
+.input {
+  padding-right: 0;  
+  padding-left: 1%;
+}
+.inputlast {
+  padding-right: 1%;  
+  padding-left: 1%;
+}
+
+.panel-body {
+  padding-right: 1%;  
+  padding-left: 1%;
+}
+
 	</style>
 
     <title>Test Menu</title>
@@ -44,22 +66,36 @@
     <body>
     <div class="container easyPrint">
 	
+	<form class="form-inline" action="../ope.php">
+  <div class="form-group">
+    <label for="email">Login:</label>
+    <input type="login" class="form-control" id="login">
+  </div>
+  <div class="form-group">
+    <label for="pwd">Senha:</label>
+    <input type="password" class="form-control" id="pwd">
+  </div>
+  <button type="submit" class="btn btn-default">Entrar</button>
+</form>
 	
-
+<div class="row">
+<div class="col-md-8">
 <div id="map"></div>
+</div>
 
 	  
-<div class="col-md-">	  <!-- coluna menu -->
+<div class="col-md-4">	  <!-- coluna menu -->
  <div class="panel panel-primary">
                 <div class="panel-heading">
                      <h3 class="panel-title">Consulta de Variáveis</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="post" id="myform">
+                    <form role="form" method="post" id="myform">
 					
 						<div class="form-group">
-                            <label class="col-sm-3 control-label">Alvo da consulta</label>
-                            <div class="col-sm-9">
+                            							<label class="control-label">Alvo da consulta:</label>
+						<div class="container-fluid">
+
                                 <div class="btn-group input-group btn-group-justified" id="radiotarget" data-toggle="buttons">
                                     <label class="btn btn-success active">
                                         <input type="radio" name="options" name="target" value="municipios" id="option1" checked />Municípios</label>
@@ -68,23 +104,26 @@
                                     <label class="btn btn-danger">
                                         <input type="radio" name="options" name="target" value="regioes" id="option3" />Regiões</label>
                                 </div>
-                            </div>
+								
+								</div>
+							
                         </div>
 						
-	                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Variáveis</label>
-                            <div class="col-sm-9">
+	                      <div class="form-group">
+						  <label class="control-label">Variáveis:</label>
+							<div class="container-fluid">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-xs-6 input">
                                     <select id="var1" name="var1" class="form-control varfield">
 										<option value="" disabled selected hidden>Variável</option>
                                         <option>PIB</option>
                                         <option>População</option>
                                         <option>IDH</option>
                                         <option>Densidade</option>
-                                    </select> 
+                                    </select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-xs-3 input">
+									
                                     <select id="val1" name="val1" class="form-control">
 										<option value="" selected disabled hidden>Fuzzy</option>
                                         <option>Baixo</option>
@@ -93,21 +132,19 @@
                                         <option>Médio Alto</option>
                                         <option>Alto</option>
                                     </select>
+									
 									</div>
-									<div class="col-md-3">
+									<div class="col-xs-3 inputlast">
 									<input type="text" class="input-small form-control" name="peso1" id="peso1" placeholder="Peso" />
 									</div>
 								</div> <!-- /row -->
-                            </div>
-							
-							
+							</div>										
                         </div>
 						
-						<div class="form-group">
-                            <label class="col-sm-3 control-label"></label>
-                            <div class="col-sm-9">
+					<div class="form-group">
+						<div class="container-fluid">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-xs-6 input">
                                     <select id="var2" name="var2" class="form-control varfield">
 										<option value="" selected disabled hidden>Variável</option>
                                         <option>PIB</option>
@@ -117,7 +154,7 @@
                                     </select> 
 									</div>
 
-									<div class="col-md-3">
+									<div class="col-xs-3 input">
                                     <select id="val2" name="val2" class="form-control">
 									<option value="" selected disabled hidden>Fuzzy</option>
                                         <option>Baixo</option>
@@ -127,18 +164,17 @@
                                         <option>Alto</option>
                                     </select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-xs-3 inputlast">
 									<input type="text" class="input-small form-control" name="peso2" id="peso2" placeholder="Peso" />
 									</div>
 								</div> <!-- /row -->
-                            </div>					
-                        </div>
+                        </div>	
+                    </div>
 						
 						<div class="form-group">
-                            <label class="col-sm-3 control-label"></label>
-                            <div class="col-sm-9">
+								<div class="container-fluid">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-xs-6 input">
                                     <select id="var3" name="var3" class="form-control varfield">
 										<option value="" selected disabled hidden>Variável</option>
                                         <option>PIB</option>
@@ -148,7 +184,7 @@
                                     </select> 
 									</div>
 									
-									<div class="col-md-3">
+									<div class="col-xs-3 input">
                                     <select id="val3" name="val3" class="form-control">
 									<option value="" selected disabled hidden>Fuzzy</option>
                                         <option>Baixo</option>
@@ -158,7 +194,7 @@
                                         <option>Alto</option>
                                     </select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-xs-3 inputlast">
 									<input type="text" class="input-small form-control" name="peso3" id="peso3" placeholder="Peso" />
 									</div>
 								</div> <!-- /row -->
@@ -166,10 +202,9 @@
                         </div>
 						
 						<div class="form-group">
-                            <label class="col-sm-3 control-label"></label>
-                            <div class="col-sm-9">
+                            <div class="container-fluid">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-xs-6 input">
                                     <select id="var4" name="var4" class="form-control varfield">
 										<option value="" selected disabled hidden>Variável</option>
                                         <option>PIB</option>
@@ -179,7 +214,7 @@
                                     </select> 
 									</div>
 									
-									<div class="col-md-3">
+									<div class="col-xs-3 input">
                                     <select id="val4" name="val4" class="form-control">
 									<option value="" selected disabled hidden>Fuzzy</option>
                                         <option>Baixo</option>
@@ -189,7 +224,7 @@
                                         <option>Alto</option>
                                     </select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-xs-3 inputlast">
 									<input type="text" class="input-small form-control" name="peso4" id="peso4" placeholder="Peso" />
 									</div>
 								</div> <!-- /row -->
@@ -197,10 +232,9 @@
                         </div>
 						
 						<div class="form-group">
-                            <label class="col-sm-3 control-label"></label>
-                            <div class="col-sm-9">
+                            <div class="container-fluid">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-xs-6 input">
                                     <select id="var5" name="var5" class="form-control varfield">
 										<option value="" selected disabled hidden>Variável</option>
                                         <option>PIB</option>
@@ -210,7 +244,7 @@
                                     </select> 
 									</div>
 									
-									<div class="col-md-3">
+									<div class="col-xs-3 input">
                                     <select id="val5" name="val5" class="form-control">
 									<option value="" selected disabled hidden>Fuzzy</option>
                                         <option>Baixo</option>
@@ -220,18 +254,23 @@
                                         <option>Alto</option>
                                     </select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-xs-3 inputlast">
 									<input type="text" class="input-small form-control" name="peso5" id="peso5" placeholder="Peso" />
 									</div>
 								</div> <!-- /row -->
                             </div>					
                         </div>
 						
-						<button type="submit">Click me</button>
+						<div class="form-group">
+							<div class="container-fluid">
+								<button type="submit" class="btn btn-primary mb-2">Gerar Mapa</button>		
+							</div>							
+                        </div>
 
-						
-
-
+				</div> <!-- /form -->
+			</div> <!-- /panel body -->
+	</div>		
+	</div><!-- /row -->
 </div> <!-- /container -->
     </body>
 	
@@ -293,7 +332,7 @@ const formToJSON = elements => [].reduce.call(elements, (data, element) => {
 
 
 
-var form = document.getElementsByClassName('form-horizontal')[0];
+var form = document.getElementById('myform');
 var lastFormData = formToJSON(form.elements);
 
 	
@@ -459,16 +498,9 @@ geojsonLayer.eachLayer(function (layer) {
 			layer.feature.properties[key] = IndexedIncomingLayer[key];
 			}
 			count++;
-		} 
-		else if (IncomingData[layer.feature.properties.COD_IBGE.slice(0, - 1)] != null) //Teste sem digito verificador
-		{
-			IndexedIncomingLayer = IncomingData[layer.feature.properties.COD_IBGE.slice(0, - 1)];
-			for (var key in IndexedIncomingLayer) {
-			layer.feature.properties[key] = IndexedIncomingLayer[key];
-			}
-			count++;
-		}			
-			else{ layer.feature.properties.status = 'Data not found'; layer.feature.properties.FinalValue = '0'; }
+		} 		
+		else{ layer.feature.properties.status = 'Data not found'; layer.feature.properties.FinalValue = '0'; 
+		console.log(layer.feature.properties.NOME_MUNI);}
 	//console.log (IndexedIncomingLayer);
 	IndexedIncomingLayer = null;  
 
@@ -536,6 +568,7 @@ function onEachFeature(feature, layer) {
 window.onload= function (){
 SetupMap(); 
 GetAtributes();
+setTimeout(function(){ map.invalidateSize()}, 400);
 }
 	</script>
 </html>
