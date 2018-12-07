@@ -16,7 +16,7 @@ if ( !empty( $_COOKIE['TargetTable'] ) ) {
 	$_SESSION['TargetTable'] = $_COOKIE['TargetTable']; //
 }
 
-echo $_SESSION['TargetTable'];
+//echo $_SESSION['TargetTable'];
 
 ?>
 <!DOCTYPE html>
@@ -40,10 +40,17 @@ echo $_SESSION['TargetTable'];
 <link rel="stylesheet" type="text/css" href="leaflet.css">
   <script src="spin.min.js"></script>
 <script type="text/javascript" src="leaflet.spin.min.js"></script>
+<script src="leaflet.browser.print.js"></script>
+<script src="leaflet.browser.print.utils.js"></script>
+<script src="leaflet.browser.print.sizes.js"></script>
+
+
 
 
 	
 	<style>
+	@page { size: landscape; }
+	
 		#map {
 		  width: 100%;
     height: 500px;
@@ -87,6 +94,7 @@ echo $_SESSION['TargetTable'];
     <body>
     <div class="container easyPrint">
 	
+	<!--
 	<form class="form-inline" action="../ope.php" method="POST">
   <div class="form-group">
     <label for="email">Login:</label>
@@ -98,7 +106,21 @@ echo $_SESSION['TargetTable'];
   </div>
   <button type="submit" class="btn btn-default">Entrar</button>
 </form>
-
+-->
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<ul class="nav navbar-nav navbar-left">
+        <li><a href="./Leafletmenu.php">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tabelas Customizadas<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../uploadfile.php">Enviar Tabela</a></li>
+            <li><a href="../usermenu.php">Selecionar Tabela </a></li>
+          </ul>
+        </li>
+      </ul>
+</div>
+</nav>
 	
 <div class="row">
 <div class="col-md-8">
@@ -120,11 +142,11 @@ echo $_SESSION['TargetTable'];
 
                                 <div class="btn-group input-group btn-group-justified" id="radiotarget" data-toggle="buttons">
                                     <label class="btn btn-success active">
-                                        <input type="radio" name="options" name="target" value="municipios" id="option1" checked />Municípios</label>
+                                        <input type="radio" name="options" value="municipios" id="option1" checked />Municípios</label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options" name="target" value="estados" id="option2" />Estados</label>
+                                        <input type="radio" name="options" value="estados" id="option2" />Estados</label>
                                     <label class="btn btn-danger">
-                                        <input type="radio" name="options" name="target" value="regioes" id="option3" />Regiões</label>
+                                        <input type="radio" name="options" value="regioes" id="option3" />Regiões</label>
                                 </div>
 								
 								</div>
@@ -364,10 +386,10 @@ const handleFormSubmit = event => {
   
   // Stop the form from submitting since we’re handling that with AJAX.
   event.preventDefault();
-  
+
   // Call our function to get the form data.
   lastFormData = formToJSON(form.elements);
-
+  console.log("kk "+lastFormData.value);
   
   // Use `JSON.stringify()` to make the output valid, human-readable JSON.
   console.log(JSON.stringify(lastFormData, null, "  "));
@@ -393,6 +415,8 @@ obj['0AC'] = '10';
 var geojsonLayer;
 var map;
 var IncomingData;
+var varTableType = "municipios";// switch municipios,estados,regioes
+var MunicipiosJson,EstadosJson,RegioesJson;
 
 
 
@@ -424,6 +448,14 @@ info.update = function (props) {
 	}
 };
 
+
+var customActionToPrint = function(context) {
+				return function() {
+					window.alert("We are printing the MAP. Let's do Custom print here!");
+					context._printCustom();
+				}
+			}
+
 //[-15.5, -49.3]
 function SetupMap() { 
 	map = new L.Map("map", {center: mybounds.getCenter(),maxBounds: mybounds,maxBoundsViscosity: 0, zoom: 4,minZoom: 4,maxZoom: 10})
@@ -433,20 +465,64 @@ function SetupMap() {
 	// position: 'bottomright',
 	// sizeModes: ['A4Portrait', 'A4Landscape']
 	// }).addTo(map);
+	
+	 // L.control.browserPrint({
+		 // title: 'Just print me!',
+	// documentTitle: 'Map printed using leaflet.browser.print plugin',
+	// printLayer: L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+                            	// attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                            	// subdomains: 'abcd',
+                            	// minZoom: 1,
+                            	// maxZoom: 16,
+                            	// ext: 'png'
+                            // }),
+	// closePopupsOnPrint: false,
+	 
+	 // printModes: [
+					// L.control.browserPrint.mode.landscape()
+				// ]
+	 // }).addTo(map);
+	 
+	 			// L.Control.BrowserPrint.Utils.registerLayer(L.TileLayer.WMS, 'L.TileLayer.WMS', function(layer) {
+				// console.info("Printing WMS layer.");
+				// return L.tileLayer.wms(layer._url, layer.options);
+			// });
+
+            // L.popup({minWidth: 500}).setLatLng(L.latLng(39.73, -104.99)).setContent("Leaflet browser print plugin with custom print Layer and content").openOn(map);
+
+
+
+}
+
+
+			
+
+var customActionToPrint = function(context) {
+return function()
+{
+    context._printCustom();
+}
 }
 
 
 function GetGeoJson(){
 		map.spin(true); //start spin while GeoJson download
 		
+		if (typeof geojsonLayer != 'undefined')
+		{
+		map.removeLayer(geojsonLayer);
+		}
 		if (lastFormData.options == "municipios"){	
-		geojsonLayer = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/municipios_fixed.json", {style: style, onEachFeature: onEachFeature});
+		MunicipiosJson = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/municipios_fixed.json", {style: style, onEachFeature: onEachFeature});
+		geojsonLayer = MunicipiosJson;
 		}
 		if (lastFormData.options == "estados"){	
-		geojsonLayer = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/estados_fixed.json", {style: style, onEachFeature: onEachFeature});
+		EstadosJson = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/estados_fixed.json", {style: style, onEachFeature: onEachFeature});
+		geojsonLayer = EstadosJson;
 		}
 		if (lastFormData.options == "regioes"){	
-		geojsonLayer = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/regioes_fixed.json", {style: style, onEachFeature: onEachFeature});
+		RegioesJson = new L.GeoJSON.AJAX("https://raw.githubusercontent.com/salucci/Leaflet-Teste/master/regioes_fixed.json", {style: style, onEachFeature: onEachFeature});
+		geojsonLayer = RegioesJson;
 		}
 		
 		geojsonLayer.on('data:loaded',function(e){
@@ -460,9 +536,9 @@ function GetGeoJson(){
 
 // It's a async request so I need to store the data and trigger later
 function GetGeoData(UpcomingData){
-console.log("Going to post "+UpcomingData);
+//console.log("Going to post "+UpcomingData);
 $.ajax({
-    url: "http://127.0.0.1/projects/phpController.php",
+    url: "../phpController.php",
     type: "POST",
     dataType: "json",
     data: UpcomingData,
@@ -479,12 +555,32 @@ $.ajax({
 });
 }
 
+// var myVar = setInterval(GetCurrentPrice,3000);
+
+// function myStopFunction() {
+    // clearInterval(myVar);
+// }
+
+// function GetCurrentPrice()
+// {
+	// lastFormData = formToJSON(form.elements);
+	// console.log("going to post get att: "+lastFormData.options);
+// }
+
+$('input[type="radio"][name="options"]').on('click change', function(e) {
+    GetAtributes();
+	
+});
+
+
 function GetAtributes(){
+	//lastFormData = formToJSON(form.elements);
+	console.log("going to post get att: "+document.querySelector('input[type="radio"][name="options"]:checked').value);//document.querySelector('input[name="options"]:checked').value
 $.ajax({
-    url: "http://127.0.0.1/projects/listAtributes.php",
+    url: "../listAtributes.php",
     type: "POST",
     dataType: "json",
-    data: {"operation": 'listAtributes',"TargetTable":'<?php echo $_SESSION['TargetTable'] ?>'},
+    data: {"TableType": document.querySelector('input[type="radio"][name="options"]:checked').value ,"operation": "listAtributes","TargetTable":"<?php echo $_SESSION['TargetTable'] ?>"},
     success: function(data){
 		console.log("fillAtt");
         console.log(data);
@@ -527,6 +623,9 @@ geojsonLayer.eachLayer(function (layer) {
 	//console.log (IndexedIncomingLayer);
 	IndexedIncomingLayer = null;  
 
+			geojsonLayer.addTo(map);
+				info.addTo(map);
+	
   layer.setStyle({
         fillColor:  scale(parseFloat(layer.feature.properties.FinalValue)),
         weight: 0,
@@ -537,15 +636,14 @@ geojsonLayer.eachLayer(function (layer) {
         });
   
 });
-alert("Foram encontradas e adicionadas ao mapa "+count+" regiões ");
-		geojsonLayer.addTo(map);
-				info.addTo(map);
+//alert("Foram encontradas e adicionadas ao mapa "+count+" regiões ");
+
 	}
 }
  
 
 function style(feature) {
-//console.log(feature.properties.UrbanosPerc);
+//console.log(feature.properties.FinalValue + "  "+ scale(parseFloat(feature.properties.FinalValue)));
     return {
         fillColor: scale(parseFloat(feature.properties.FinalValue)),
         weight: 0,
@@ -587,11 +685,24 @@ function onEachFeature(feature, layer) {
         click: zoomToFeature
     });
 }
+
+L.Map.include({
+  'clearLayers': function () {
+    this.eachLayer(function (layer) {
+      this.removeLayer(layer);
+    }, this);
+  }
+});
 	 
-window.onload= function (){
-SetupMap(); 
-GetAtributes();
-setTimeout(function(){ map.invalidateSize()}, 400);
-}
+	 
+   $(document).ready(function () {
+        SetupMap(); 
+		GetAtributes();
+		setTimeout(function(){ map.invalidateSize()}, 400);
+    });
+	 
+//window.onload= function (){
+
+//}
 	</script>
 </html>
