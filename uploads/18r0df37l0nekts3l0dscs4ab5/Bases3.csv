@@ -1,0 +1,316 @@
+Codigo;Nome;1_PNBL_PRESTADORES_FIXA
+110001;Alta Floresta D'Oeste;2
+110002;Ariquemes;3
+110003;Cabixi;5
+110004;Cacoal;4
+110005;Cerejeiras;7
+110006;Colorado do Oeste;6
+110007;Corumbiara;8
+110008;Costa Marques;9
+110009;Espigão D'Oeste;6
+110010;Guajará-Mirim;0
+110011;Jaru;3
+110012;Ji-Paraná;22
+110013;Machadinho D'Oeste;11
+110014;Nova Brasilândia D'Oeste;23
+110015;Ouro Preto do Oeste;4
+110018;Pimenta Bueno;32
+110020;Porto Velho;3
+110025;Presidente Médici;5
+110026;Rio Crespo;34
+110028;Rolim de Moura;5
+110029;Santa Luzia D'Oeste;11
+110030;Vilhena;7
+110032;São Miguel do Guaporé;7
+110033;Nova Mamoré;6
+110034;Alvorada D'Oeste;23
+110037;Alto Alegre dos Parecis;3
+110040;Alto Paraíso;12
+110045;Buritis;1
+110050;Novo Horizonte do Oeste;22
+110060;Cacaulândia;1
+110070;Campo Novo de Rondônia;1
+110080;Candeias do Jamari;1
+110090;Castanheiras;1
+110092;Chupinguaia;1
+110094;Cujubim;1
+110100;Governador Jorge Teixeira;1
+110110;Itapuã do Oeste;2
+110120;Ministro Andreazza;2
+110130;Mirante da Serra;2
+110140;Monte Negro;2
+110143;Nova União;2
+110145;Parecis;3
+110146;Pimenteiras do Oeste;3
+110147;Primavera de Rondônia;56
+110148;São Felipe D'Oeste;7
+110149;São Francisco do Guaporé;7
+110150;Seringueiras;7
+110155;Teixeirópolis;7
+110160;Theobroma;11
+110170;Urupá;11
+110175;Vale do Anari;11
+110180;Vale do Paraíso;11
+120001;Acrelândia;11
+120005;Assis Brasil;11
+120010;Brasiléia;11
+120013;Bujari;11
+120017;Capixaba;11
+120020;Cruzeiro do Sul;11
+120025;Epitaciolândia;11
+120030;Feijó;11
+120032;Jordão;11
+120033;Mâncio Lima;11
+120034;Manoel Urbano;11
+120035;Marechal Thaumaturgo;11
+120038;Plácido de Castro;11
+120039;Porto Walter;11
+120040;Rio Branco;11
+120042;Rodrigues Alves;11
+120043;Santa Rosa do Purus;11
+120045;Senador Guiomard;11
+120050;Sena Madureira;11
+120060;Tarauacá;11
+120070;Xapuri;11
+120080;Porto Acre;11
+130002;Alvarães;11
+130006;Amaturá;11
+130008;Anamã;11
+130010;Anori;11
+130014;Apuí;11
+130020;Atalaia do Norte;11
+130030;Autazes;11
+130040;Barcelos;11
+130050;Barreirinha;11
+130060;Benjamin Constant;11
+130063;Beruri;11
+130068;Boa Vista do Ramos;11
+130070;Boca do Acre;11
+130080;Borba;11
+130083;Caapiranga;11
+130090;Canutama;11
+130100;Carauari;11
+130110;Careiro;11
+130115;Careiro da Várzea;11
+130120;Coari;11
+130130;Codajás;11
+130140;Eirunepé;11
+130150;Envira;11
+130160;Fonte Boa;11
+130165;Guajará;11
+130170;Humaitá;11
+130180;Ipixuna;11
+130185;Iranduba;11
+130190;Itacoatiara;11
+130195;Itamarati;11
+130200;Itapiranga;11
+130210;Japurá;11
+130220;Juruá;11
+130230;Jutaí;11
+130240;Lábrea;11
+130250;Manacapuru;11
+130255;Manaquiri;11
+130260;Manaus;11
+130270;Manicoré;11
+130280;Maraã;11
+130290;Maués;11
+130300;Nhamundá;11
+130310;Nova Olinda do Norte;11
+130320;Novo Airão;11
+130330;Novo Aripuanã;11
+130340;Parintins;11
+130350;Pauini;11
+130353;Presidente Figueiredo;11
+130356;Rio Preto da Eva;11
+130360;Santa Isabel do Rio Negro;11
+130370;Santo Antônio do Içá;11
+130380;São Gabriel da Cachoeira;11
+130390;São Paulo de Olivença;11
+130395;São Sebastião do Uatumã;11
+130400;Silves;11
+130406;Tabatinga;11
+130410;Tapauá;11
+130420;Tefé;11
+130423;Tonantins;11
+130426;Uarini;11
+130430;Urucará;11
+130440;Urucurituba;11
+140002;Amajari;11
+140005;Alto Alegre;11
+140010;Boa Vista;11
+140015;Bonfim;11
+140017;Cantá;11
+140020;Caracaraí;11
+140023;Caroebe;11
+140028;Iracema;11
+140030;Mucajaí;11
+140040;Normandia;11
+140045;Pacaraima;11
+140047;Rorainópolis;11
+140050;São João da Baliza;11
+140060;São Luiz;11
+140070;Uiramutã;11
+150010;Abaetetuba;11
+150013;Abel Figueiredo;11
+150020;Acará;11
+150030;Afuá;11
+150034;Água Azul do Norte;11
+150040;Alenquer;11
+150050;Almeirim;11
+150060;Altamira;11
+150070;Anajás;11
+150080;Ananindeua;11
+150085;Anapu;11
+150090;Augusto Corrêa;11
+150095;Aurora do Pará;11
+150100;Aveiro;11
+150110;Bagre;11
+150120;Baião;11
+150125;Bannach;11
+150130;Barcarena;11
+150140;Belém;11
+150145;Belterra;11
+150150;Benevides;11
+150157;Bom Jesus do Tocantins;11
+150160;Bonito;11
+150170;Bragança;11
+150172;Brasil Novo;11
+150175;Brejo Grande do Araguaia;11
+150178;Breu Branco;11
+150180;Breves;11
+150190;Bujaru;11
+150195;Cachoeira do Piriá;11
+150200;Cachoeira do Arari;11
+150210;Cametá;11
+150215;Canaã dos Carajás;11
+150220;Capanema;11
+150230;Capitão Poço;11
+150240;Castanhal;11
+150250;Chaves;11
+150260;Colares;11
+150270;Conceição do Araguaia;11
+150275;Concórdia do Pará;11
+150276;Cumaru do Norte;11
+150277;Curionópolis;11
+150280;Curralinho;11
+150285;Curuá;11
+150290;Curuçá;11
+150293;Dom Eliseu;11
+150295;Eldorado dos Carajás;11
+150300;Faro;11
+150304;Floresta do Araguaia;11
+150307;Garrafão do Norte;11
+150309;Goianésia do Pará;11
+150310;Gurupá;11
+150320;Igarapé-Açu;11
+150330;Igarapé-Miri;11
+150340;Inhangapi;11
+150345;Ipixuna do Pará;11
+150350;Irituia;11
+150360;Itaituba;11
+150370;Itupiranga;11
+150375;Jacareacanga;11
+150380;Jacundá;11
+150390;Juruti;11
+150400;Limoeiro do Ajuru;11
+150405;Mãe do Rio;11
+150410;Magalhães Barata;11
+150420;Marabá;11
+150430;Maracanã;11
+150440;Marapanim;11
+150442;Marituba;11
+150445;Medicilândia;11
+150450;Melgaço;11
+150460;Mocajuba;11
+150470;Moju;11
+150480;Monte Alegre;11
+150490;Muaná;11
+150495;Nova Esperança do Piriá;11
+150497;Nova Ipixuna;11
+150500;Nova Timboteua;11
+150503;Novo Progresso;11
+150506;Novo Repartimento;11
+150510;Óbidos;11
+150520;Oeiras do Pará;11
+150530;Oriximiná;11
+150540;Ourém;11
+150543;Ourilândia do Norte;11
+150548;Pacajá;11
+150549;Palestina do Pará;11
+150550;Paragominas;11
+150553;Parauapebas;11
+150555;Pau D'Arco;11
+150560;Peixe-Boi;11
+150563;Piçarra;11
+150565;Placas;11
+150570;Ponta de Pedras;11
+150580;Portel;11
+150590;Porto de Moz;11
+150600;Prainha;11
+150610;Primavera;11
+150611;Quatipuru;11
+150613;Redenção;11
+150616;Rio Maria;11
+150618;Rondon do Pará;11
+150619;Rurópolis;11
+150620;Salinópolis;11
+150630;Salvaterra;11
+150635;Santa Bárbara do Pará;11
+150640;Santa Cruz do Arari;11
+150650;Santa Isabel do Pará;11
+150655;Santa Luzia do Pará;11
+150658;Santa Maria das Barreiras;11
+150660;Santa Maria do Pará;11
+150670;Santana do Araguaia;11
+150680;Santarém;11
+150690;Santarém Novo;11
+150700;Santo Antônio do Tauá;11
+150710;São Caetano de Odivelas;11
+150715;São Domingos do Araguaia;11
+150720;São Domingos do Capim;11
+150730;São Félix do Xingu;11
+150740;São Francisco do Pará;11
+150745;São Geraldo do Araguaia;11
+150746;São João da Ponta;11
+150747;São João de Pirabas;11
+150750;São João do Araguaia;11
+150760;São Miguel do Guamá;11
+150770;São Sebastião da Boa Vista;11
+150775;Sapucaia;11
+150780;Senador José Porfírio;11
+150790;Soure;11
+150795;Tailândia;11
+150796;Terra Alta;11
+150797;Terra Santa;11
+150800;Tomé-Açu;11
+150803;Tracuateua;11
+150805;Trairão;11
+150808;Tucumã;11
+150810;Tucuruí;11
+150812;Ulianópolis;11
+150815;Uruará;11
+150820;Vigia;11
+150830;Viseu;11
+150835;Vitória do Xingu;11
+150840;Xinguara;11
+160005;Serra do Navio;11
+160010;Amapá;11
+160015;Pedra Branca do Amapari;11
+160020;Calçoene;11
+160021;Cutias;11
+160023;Ferreira Gomes;11
+160025;Itaubal;11
+160027;Laranjal do Jari;11
+160030;Macapá;11
+160040;Mazagão;11
+160050;Oiapoque;11
+160053;Porto Grande;11
+160055;Pracuúba;11
+160060;Santana;11
+160070;Tartarugalzinho;11
+160080;Vitória do Jari;11
+170025;Abreulândia;11
+170030;Aguiarnópolis;11
+170035;Aliança do Tocantins;11
+170040;Almas;11
+170070;Alvorada;11
